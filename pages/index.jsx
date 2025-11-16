@@ -21,6 +21,12 @@ export default function Home() {
       description:
         'Walk through the ULRM+ chain from Pneuma to Mnēma, compare it to symbolic chaos, and understand why structure is the immune system of meaning.',
     },
+    {
+      title: 'Structural Coherence Modal',
+      href: '/structural-coherence-modal',
+      description:
+        'Experience the original modal presentation of the briefing—open the floating knowledge capsule and feel the full-screen immersion.',
+    },
   ];
 
   return (
