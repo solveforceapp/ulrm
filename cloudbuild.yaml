@@ -1,0 +1,52 @@
+# Cloud Build configuration for Next.js application
+steps:
+  # Install dependencies
+  - name: 'node:18'
+    entrypoint: npm
+    args: ['install']
+  
+  # Run linter (allow to fail - there are pre-existing lint issues)
+  - name: 'node:18'
+    entrypoint: npm
+    args: ['run', 'lint']
+    allowFailure: true
+  
+  # Build the Next.js application
+  - name: 'node:18'
+    entrypoint: npm
+    args: ['run', 'build']
+  
+  # Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t', 'gcr.io/$PROJECT_ID/ulrm:$COMMIT_SHA',
+      '-t', 'gcr.io/$PROJECT_ID/ulrm:latest',
+      '.'
+    ]
+  
+  # Push Docker image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/ulrm:$COMMIT_SHA']
+  
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/ulrm:latest']
+
+# Specify the Docker images to be pushed to Container Registry
+images:
+  - 'gcr.io/$PROJECT_ID/ulrm:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/ulrm:latest'
+
+# Store the build output as an artifact
+artifacts:
+  objects:
+    location: 'gs://${PROJECT_ID}_cloudbuild/ulrm'
+    paths: ['.next/**', 'out/**', 'public/**', 'package.json', 'next.config.js']
+
+# Build timeout (default is 10 minutes)
+timeout: '1200s'
+
+# Build options
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'N1_HIGHCPU_8'

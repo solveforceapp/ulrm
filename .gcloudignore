@@ -1,0 +1,36 @@
+# This file specifies files that are intentionally untracked by git and should be
+# excluded from Cloud Build uploads. Learn more at:
+# https://cloud.google.com/cloud-build/docs/building/create-basic-configuration
+
+.gcloudignore
+.git
+.gitignore
+
+# Node.js dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Testing
+coverage/
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env*.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
